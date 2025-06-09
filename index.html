@@ -1,11 +1,10 @@
 <!-- 　
 ページ読込直後は、glbモデル非表示。
   クリックorタップorVRゴーグルのトリガーを引くとイベント（startExperience）発生し、BGM再生
-　BGM再生から1秒後に、anime01を1回表示（初期位置(0,-0.8,-6)、移動なし）
-  anime01を4回表示し終わったら、anime02を2回繰り返し再生（(0,-0.8,-6)→(0,-0.8,-2)へ移動）、sound02再生
-  anime02を3回表示し終わったら、anime03を3回繰り返し再生（移動なし）、sound07再生
-  anime03を3回表示し終わったら、anime04を1回再生（移動なし）、sound04再生
-  anime04を1回再生し終わったら、自動的に https://seiei.ac.jp/ にページ遷移
+　BGM再生から2秒後に、anime04を1回表示（初期位置(0,-0.8,-6)、移動なし）
+  anime04を1回表示し終わったら、anime05を2回再生（(0,-0.8,-6)→(0,-0.8,-2)へ移動）、sakebu3再生
+  anime05を2回表示し終わったら、anime03を1回再生（移動なし）、wareru2再生
+  anime03を1回再生し終わったら、自動的に https://seiei.ac.jp/ にページ遷移
  -->
 <!DOCTYPE html>
 <html>
@@ -23,7 +22,7 @@
       id="myModel"
       gltf-model="./zombie.glb"
       position="0 0 -5"
-      scale="1.5 1.5 1.5"
+      scale="3.5 3.5 3.5"
       visible="false"
     ></a-entity>
     
@@ -31,11 +30,10 @@
     <a-sky id="sky" src="nakaniwa.JPG" rotation="0 0 0"></a-sky>
     
     <!-- 音声エンティティ -->
-    <a-entity id="bgm" sound="src: url(.sound01; autoplay: false; loop: true;"></a-entity>
-    <a-entity id="sound1" sound="src: urls(sound02.mp3); autoplay: false; loop: true;"></a-entity>
-    <a-entity id="sound2" sound="src: url(sound03.mp3); autoplay: false; loop: false;"></a-entity>
-    <a-entity id="sound3" sound="src: url(sound07.mp3); autoplay: false; loop: true;"></a-entity>
-    <a-entity id="sound4" sound="src: url(sound04.mp3); autoplay: false; loop: false;"></a-entity>
+    <a-entity id="bgm" sound="src: url(muci_sasu_r02.mp3); autoplay: false; loop: true;"></a-entity>
+    <a-entity id="sakebu3" sound="src: url(sakebu3.mp3); autoplay: false; loop: false;"></a-entity>
+    <a-entity id="wareru" sound="src: url(wareru.mp3); autoplay: false; loop: false;"></a-entity>
+    <a-entity id="wareru2" sound="src: url(wareru2.mp3); autoplay: false; loop: false;"></a-entity>
     
     <!-- カメラとカーソル -->
     <a-entity camera look-controls>
@@ -52,10 +50,9 @@
       const modelEl = document.getElementById('myModel');
       const skyEl = document.getElementById('sky');
       const bgmEl = document.getElementById('bgm');
-      const sound1El = document.getElementById('sound1');
-      const sound2El = document.getElementById('sound2');
-      const sound3El = document.getElementById('sound3');
-      const sound4El = document.getElementById('sound4');
+      const sakebu3El = document.getElementById('sakebu3');
+      const wareruEl = document.getElementById('wareru');
+      const wareru2El = document.getElementById('wareru2');
       
       let hasStarted = false;
       // モデルを事前に読み込んでおく
@@ -70,42 +67,35 @@
         document.removeEventListener('click', startExperience);
         console.log('ユーザーアクションを検出しました。BGMを開始します。');
         bgmEl.components.sound.playSound();
-        // BGM再生から1秒後にモデル表示・anime01(1回・移動なし・初期位置)開始
+        // BGM再生から2秒後にモデル表示・anime04(1回・移動なし・初期位置)開始
         setTimeout(function() {
-          console.log('BGM再生1秒後、モデル表示・anime01(1回)開始');
+          // anime04(1回)は12.2秒
+          console.log('BGM再生2秒後、モデル表示・anime04(1回)開始');
           modelEl.setAttribute('visible', true);
-          modelEl.setAttribute('position', '0 -0.8 -6');
-          modelEl.setAttribute('animation-mixer', {clip: 'anime01', loop: 'false', repetitions: '1', timeScale: '1', clampWhenFinished: 'true'});
-          // anime01(1回)は4.033秒
+          modelEl.setAttribute('position', '0 -0.8 -15');
+          modelEl.setAttribute('animation-mixer', {clip: 'anime04', loop: 'false', repetitions: '1', timeScale: '1', clampWhenFinished: 'true'});
           setTimeout(function() {
-            // anime02(2回・移動あり)＋sound02再生
-            console.log('anime01(1回)終了、anime02(2回・移動あり)＋sound02再生');
-            modelEl.setAttribute('animation-mixer', {clip: 'anime02', loop: 'false', repetitions: '2', timeScale: '1', clampWhenFinished: 'true'});
-            modelEl.setAttribute('animation__position', 'property: position; to: 0 -0.8 -2; dur: 1600; easing: easeInSine; loop: false');
-            sound2El.components.sound.playSound();
-            // anime02(2回)は0.8秒×2=1.6秒
+            // anime04(1回)終了、anime05(2回・移動あり)＋sakebu3再生
+            // anime05(2回)は2.133秒×2=4.266秒
+            console.log('anime04(1回)終了、anime05(2回・移動あり)＋sakebu3再生');
+            modelEl.setAttribute('animation-mixer', {clip: 'anime05', loop: 'false', repetitions: '2', timeScale: '1', clampWhenFinished: 'true'});
+            modelEl.setAttribute('animation__position', 'property: position; to: 0 -0.8 -2; dur: 4266; easing: easeInSine; loop: false');
+            sakebu3El.components.sound.playSound();
             setTimeout(function() {
-              // anime03(3回・移動なし)＋sound07再生
-              console.log('anime02(2回)終了、anime03(3回)＋sound07再生');
+              // anime05(2回)終了、anime03(1回・移動なし)＋wareru2再生
+              // anime03(1回)は5.53秒
+              console.log('anime05(2回)終了、anime03(1回)＋wareru2再生');
               modelEl.removeAttribute('animation__position');
-              modelEl.setAttribute('animation-mixer', {clip: 'anime03', loop: 'false', repetitions: '3', timeScale: '1', clampWhenFinished: 'true'});
-              sound3El.components.sound.playSound();
-              // anime03(3回)は5.5秒×3=16.5秒
+              modelEl.setAttribute('animation-mixer', {clip: 'anime03', loop: 'false', repetitions: '1', timeScale: '1', clampWhenFinished: 'true'});
+              wareru2El.components.sound.playSound();
               setTimeout(function() {
-                // anime04(1回・移動なし)＋sound04再生
-                console.log('anime03(3回)終了、anime04(1回)＋sound04再生');
-                modelEl.setAttribute('animation-mixer', {clip: 'anime04', loop: 'false', repetitions: '1', timeScale: '1', clampWhenFinished: 'true'});
-                sound4El.components.sound.playSound();
-                // anime04(1回)は12.167秒
-                setTimeout(function() {
-                  // ページ遷移
-                  console.log('anime04(1回)終了、ページ遷移');
-                  window.location.href = 'https://seiei.ac.jp/';
-                }, 12167);
-              }, 16500);
-            }, 1600);
-          }, 4033);
-        }, 1000);
+                // anime03(1回)終了、ページ遷移
+                console.log('anime03(1回)終了、ページ遷移');
+                window.location.href = 'https://seiei.ac.jp/';
+              }, 5530);
+            }, 4266);
+          }, 12200);
+        }, 2000);
       }
     });
   </script>
