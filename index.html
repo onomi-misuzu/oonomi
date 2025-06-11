@@ -70,7 +70,12 @@
       
       // クリック/タップでスタート
       document.addEventListener('click', startExperience, { once: true });
-      sceneEl.addEventListener('triggerdown', startExperience, { once: true });
+
+      // VRコントローラーのトリガーでスタート
+      sceneEl.addEventListener('controllerconnected', function (evt) {
+        const controller = evt.detail.component.el;
+        controller.addEventListener('triggerdown', startExperience, { once: true });
+      });
 
       function startExperience() {
         if (hasStarted) return; // 二重実行防止
