@@ -2,7 +2,7 @@
 ページ読込直後は、glbモデル非表示。
   クリックorタップorVRゴーグルのトリガーを引くとイベント（startExperience）発生し、BGM再生
 　BGM再生から2秒後に、anime04を1回表示（初期位置(0,-0.8,-6)、移動なし）
-  anime04を1回表示し終わったら、anime05を2回再生（(0,-0.8,-6)→(0,-0.8,-2)へ移動）、sakebu3再生
+  anime04を1回表示し終わったら、anime05を2回再生（(0,-0.8,-6)→(0,-0.8,-2)へ移動）、muci_sasu_r02.mp3再生
   anime05を2回表示し終わったら、anime03を1回再生（移動なし）、wareru2再生
   anime03を1回再生し終わったら、自動的に https://seiei.ac.jp/ にページ遷移
  -->
@@ -22,23 +22,23 @@
       id="myModel"
       gltf-model="./zombie.glb"
       position="0 0 -5"
-      scale="5 5 5"
+      scale="7 7 7 "
       visible="false"
     ></a-entity>
     
     <!-- 360度画像の背景 -->
-    <a-sky id="sky" src="nakaniwa.JPG" rotation="0 0 0"></a-sky>
+    <a-sky id="sky" src="R0010036 (3).JPG" rotation="0 0 0"></a-sky>
     
     <!-- 音声エンティティ -->
     <a-entity id="bgm" sound="src: url(muci_sasu_r02.mp3); autoplay: false; loop: true;"></a-entity>
-    <a-entity id="sakebu3" sound="src: url(sakebu3.mp3); autoplay: false; loop: false;"></a-entity>
-    <a-entity id="wareru" sound="src: url(wareru.mp3); autoplay: false; loop: false;"></a-entity>
+    <a-entity id="sakebu3" sound="src: url(zipper2.mp3); autoplay: false; loop: false;"></a-entity>
     <a-entity id="wareru2" sound="src: url(wareru2.mp3); autoplay: false; loop: false;"></a-entity>
+    <a-entity id="wareru" sound="src: url(wareru.mp3); autoplay: false; loop: false;"></a-entity>
     
     <!-- カメラとカーソル -->
     <a-entity camera look-controls>
       <a-entity cursor="fuse: false"
-                position="0 -1.5 -1"
+                position="-11.031 -6.035-103.34"
                 geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
                 material="color: white; shader: flat">
       </a-entity>
@@ -80,14 +80,14 @@
           // anime04(1回)は12.2秒
           console.log('BGM再生2秒後、モデル表示・anime04(1回)開始');
           modelEl.setAttribute('visible', true);
-          modelEl.setAttribute('position', '0 -0.8 -15');
+          modelEl.setAttribute('position', '-13 -5 -125');
           modelEl.setAttribute('animation-mixer', {clip: 'anime04', loop: 'false', repetitions: '1', timeScale: '1', clampWhenFinished: 'true'});
           setTimeout(function() {
             // anime04(1回)終了、anime05(2回・移動あり)＋sakebu3再生
             // anime05(2回)は2.133秒×2=4.266秒
             console.log('anime04(1回)終了、anime05(2回・移動あり)＋sakebu3再生');
             modelEl.setAttribute('animation-mixer', {clip: 'anime05', loop: 'false', repetitions: '2', timeScale: '1', clampWhenFinished: 'true'});
-            modelEl.setAttribute('animation__position', 'property: position; to: 0 -0.8 -2.9; dur: 4266; easing: easeInSine; loop: false');
+            modelEl.setAttribute('animation__position', 'property: position; to: 0 -1.8 -3.9; dur: 4266; easing: easeInSine; loop: false');
             sakebu3El.components.sound.playSound();
             setTimeout(function() {
               // anime05(2回)終了、anime03(1回・移動なし)＋wareru2再生
@@ -99,7 +99,7 @@
               setTimeout(function() {
                 // anime03(1回)終了、ページ遷移
                 console.log('anime03(1回)終了、ページ遷移');
-                window.location.href = '../vr/';
+                window.location.href = '../vr11/';
               }, 5530);
             }, 4266);
           }, 12200);
