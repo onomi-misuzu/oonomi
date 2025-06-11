@@ -22,7 +22,7 @@
       id="myModel"
       gltf-model="./zombie.glb"
       position="0 0 -5"
-      scale="7 7 7 "
+      scale="7 7 7"
       visible="false"
     ></a-entity>
     
@@ -69,6 +69,8 @@
       });
       // クリック/タップでスタート
       document.addEventListener('click', startExperience);
+      sceneEl.addEventListener('triggerdown', startExperience, { once: true });
+
       function startExperience() {
         if (hasStarted) return; // 二重実行防止
         hasStarted = true;
