@@ -67,8 +67,9 @@
       modelEl.addEventListener('model-loaded', function () {
         console.log('モデルが正常に読み込まれました（非表示状態）');
       });
+      
       // クリック/タップでスタート
-      document.addEventListener('click', startExperience);
+      document.addEventListener('click', startExperience, { once: true });
       sceneEl.addEventListener('triggerdown', startExperience, { once: true });
 
       function startExperience() {
