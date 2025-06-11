@@ -16,7 +16,11 @@
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 </head>
 <body>
-  <a-scene>
+  <a-scene vr-mode-ui="enabled: true">
+    <!-- Controller -->
+    <a-entity laser-controls="hand: left" raycaster="objects: .collidable; far: 4; color: #ffcccc"></a-entity>
+    <a-entity laser-controls="hand: right" raycaster="objects: .collidable; far: 4; color: #ccffcc"></a-entity>
+
     <!-- 最初は非表示(visible="false")にしておく -->
     <a-entity
       id="myModel"
@@ -68,13 +72,15 @@
         console.log('モデルが正常に読み込まれました（非表示状態）');
       });
       // クリック/タップでスタート
-      document.addEventListener('click', startExperience, { once: true });
-      sceneEl.addEventListener('triggerdown', startExperience, { once: true });
+      document.addEventListener('click', startExperience);
+      sceneEl.addEventListener('triggerdown', startExperience);
 
       function startExperience() {
         if (hasStarted) return; // 二重実行防止
         hasStarted = true;
         document.removeEventListener('click', startExperience);
+        sceneEl.removeEventListener('triggerdown', startExperience);
+
         console.log('ユーザーアクションを検出しました。BGMを開始します。');
         bgmEl.components.sound.playSound();
         // BGM再生から2秒後にモデル表示・anime04(1回・移動なし・初期位置)開始
